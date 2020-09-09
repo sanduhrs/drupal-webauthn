@@ -1,0 +1,6 @@
+name: Webauthn
+type: module
+description: The Webauthn protocol implementation.
+package: Authentication
+core: 8.x
+core_version_requirement: ^8 || ^9

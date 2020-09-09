@@ -1,0 +1,16 @@
+{
+    "name": "drupal/webauthn",
+    "description": "The Webauthn implementation.",
+    "type": "drupal-module",
+    "license": "GPL-2-or-later",
+    "authors": [
+        {
+            "name": "Stefan Auditor",
+            "email": "stefan@auditor.email"
+        }
+    ],
+    "require": {
+        "ext-json": "*",
+        "web-auth/webauthn-lib": "^3.2"
+    }
+}

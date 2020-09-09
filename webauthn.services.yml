@@ -1,0 +1,13 @@
+services:
+  webauthn.server:
+    class: Drupal\webauthn\Server
+    arguments: ['@webauthn.repository', '@webauthn.relying_party', '@webauthn.metadata', '@logger.factory']
+  webauthn.repository:
+    class: Drupal\webauthn\Repository
+    arguments: ['@config.factory']
+  webauthn.relying_party:
+    class: Drupal\webauthn\RelyingParty
+    arguments: ['@config.factory']
+  webauthn.metadata:
+    class: Drupal\webauthn\Metadata
+    arguments: ['@config.factory']

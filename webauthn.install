@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Install and update hooks for Webauthn module.
+ */
+
+/**
+ * Implements hook_install();
+ */
+function webauthn_install() {
+  \Drupal::configFactory()->getEditable('webauthn.settings')
+    ->set('relying_party_name', \Drupal::config('system.site')->get('name'))
+    ->set('relying_party_id', \Drupal::request()->getHost())
+    ->set('relying_party_icon', '')
+    ->save();
+}

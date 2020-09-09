@@ -1,0 +1,46 @@
+webauthn.login:
+  path: '/webauthn/login'
+  defaults:
+    _title: 'Login'
+    _form: 'Drupal\webauthn\Form\Login'
+  requirements:
+    _permission: 'access content'
+webauthn.login_do:
+  path: '/webauthn/login/action'
+  defaults:
+    _controller: '\Drupal\webauthn\Controller\LoginController::action'
+  requirements:
+    _permission: 'access content'
+webauthn.login_options:
+  path: '/webauthn/login/options'
+  defaults:
+    _controller: '\Drupal\webauthn\Controller\LoginController::options'
+  requirements:
+    _permission: 'access content'
+webauthn.register:
+  path: '/webauthn/register'
+  defaults:
+    _title: 'Register'
+    _form: 'Drupal\webauthn\Form\Register'
+  requirements:
+    _permission: 'access content'
+webauthn.register_do:
+  path: '/webauthn/register/do'
+  defaults:
+    _controller: '\Drupal\webauthn\Controller\RegisterController::action'
+  requirements:
+    _permission: 'access content'
+webauthn.register_options:
+  path: '/webauthn/register/options'
+  defaults:
+    _controller: '\Drupal\webauthn\Controller\RegisterController::options'
+  requirements:
+    _permission: 'access content'
+
+webauthn.settings:
+  path: '/admin/config/services/webauthn'
+  defaults:
+    _title: 'Webauthn settings'
+    _form: 'Drupal\webauthn\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'

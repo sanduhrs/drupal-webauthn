@@ -1,0 +1,12 @@
+webauthn-helper:
+  js:
+    /libraries/webauthn-helper/dist/webauthn.js: {}
+webauthn:
+  js:
+    js/webauthn.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
+    - webauthn/webauthn-helper
