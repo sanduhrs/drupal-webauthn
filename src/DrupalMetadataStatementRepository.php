@@ -7,9 +7,11 @@ use Webauthn\MetadataService\MetadataStatement;
 use Webauthn\MetadataService\MetadataStatementRepository;
 
 /**
- * Metadata service.
+ * The Drupal Metadata Statement Repository implementation.
+ *
+ * @package Drupal\webauthn
  */
-class Metadata implements MetadataStatementRepository {
+class DrupalMetadataStatementRepository implements MetadataStatementRepository {
 
   /**
    * The config factory.
@@ -19,7 +21,7 @@ class Metadata implements MetadataStatementRepository {
   protected $configFactory;
 
   /**
-   * Constructs a Metadata object.
+   * DrupalMetadataStatementRepository constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.

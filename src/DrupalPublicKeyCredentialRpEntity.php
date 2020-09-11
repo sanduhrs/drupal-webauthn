@@ -6,9 +6,11 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Webauthn\PublicKeyCredentialRpEntity;
 
 /**
- * RelyingParty service.
+ * The Drupal Public Key Credential Relying Party Entity implementation.
+ *
+ * @package Drupal\webauthn
  */
-class RelyingParty extends PublicKeyCredentialRpEntity {
+class DrupalPublicKeyCredentialRpEntity extends PublicKeyCredentialRpEntity {
 
   /**
    * The config factory.
@@ -18,7 +20,7 @@ class RelyingParty extends PublicKeyCredentialRpEntity {
   protected $config;
 
   /**
-   * Constructs a RelyingParty object.
+   * DrupalPublicKeyCredentialRpEntity constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.

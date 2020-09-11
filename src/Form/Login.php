@@ -6,7 +6,9 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Provides a Webauthn form.
+ * The login form implementation.
+ *
+ * @package Drupal\webauthn\Form
  */
 class Login extends FormBase {
 

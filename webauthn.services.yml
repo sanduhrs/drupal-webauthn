@@ -1,13 +1,16 @@
 services:
   webauthn.server:
-    class: Drupal\webauthn\Server
-    arguments: ['@webauthn.repository', '@webauthn.relying_party', '@webauthn.metadata', '@logger.factory']
-  webauthn.repository:
-    class: Drupal\webauthn\Repository
+    class: Drupal\webauthn\DrupalWebauthnServer
+    arguments: ['@webauthn.public_key_credential_source_repository', '@webauthn.public_key_credential_relying_party', '@webauthn.metadata_statement_repository', '@logger.factory']
+  webauthn.public_key_credential_source_repository:
+    class: Drupal\webauthn\DrupalPublicKeyCredentialSourceRepository
+    arguments: ['@config.factory', '@database']
+  webauthn.public_key_credential_user_entity_repository:
+    class: Drupal\webauthn\DrupalPublicKeyCredentialUserEntityRepository
     arguments: ['@config.factory']
-  webauthn.relying_party:
-    class: Drupal\webauthn\RelyingParty
+  webauthn.public_key_credential_relying_party:
+    class: Drupal\webauthn\DrupalPublicKeyCredentialRpEntity
     arguments: ['@config.factory']
-  webauthn.metadata:
-    class: Drupal\webauthn\Metadata
+  webauthn.metadata_statement_repository:
+    class: Drupal\webauthn\DrupalMetadataStatementRepository
     arguments: ['@config.factory']

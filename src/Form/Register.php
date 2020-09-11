@@ -6,7 +6,9 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Provides a Webauthn form.
+ * The registration form implementation.
+ *
+ * @package Drupal\webauthn\Form
  */
 class Register extends FormBase {
 

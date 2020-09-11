@@ -6,9 +6,11 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Configure Webauthn settings for this site.
+ * The settings form implementation.
+ *
+ * @package Drupal\webauthn\Form
  */
-class SettingsForm extends ConfigFormBase {
+class Settings extends ConfigFormBase {
 
   /**
    * {@inheritdoc}

@@ -2,8 +2,43 @@
 
 /**
  * @file
- * Install and update hooks for Webauthn module.
+ * Install, schema and update hooks for Webauthn module.
  */
+
+/**
+ * Implements hook_schema();
+ */
+function webauthn_schema() {
+  $schema['webauthn_public_key_credential_source'] = [
+    'description' => 'Stores webauthn public key credential sources.',
+    'fields' => [
+      'cid' => [
+        'description' => 'The credential id.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'uuid' => [
+        'description' => 'The credential id.',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'credential' => [
+        'description' => 'The serialized credential.',
+        'type' => 'text',
+        'serialized' => TRUE,
+        'binary' => TRUE,
+      ],
+    ],
+    'primary key' => [
+      'cid',
+    ],
+  ];
+  return $schema;
+}
 
 /**
  * Implements hook_install();
@@ -11,7 +46,7 @@
 function webauthn_install() {
   \Drupal::configFactory()->getEditable('webauthn.settings')
     ->set('relying_party_name', \Drupal::config('system.site')->get('name'))
-    ->set('relying_party_id', \Drupal::request()->getHost())
+    ->set('relying_party_id', '')
     ->set('relying_party_icon', '')
     ->save();
 }

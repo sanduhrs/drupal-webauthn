@@ -1,5 +1,6 @@
 webauthn.settings:
-  title: Webauthn settings
+  title: Webauthn
+  description: Configure the webauthn relying party settings.
   parent: system.admin_config_services
   route_name: webauthn.settings
   weight: 10
