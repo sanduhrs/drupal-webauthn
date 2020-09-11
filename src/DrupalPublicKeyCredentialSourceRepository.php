@@ -3,7 +3,6 @@
 namespace Drupal\webauthn;
 
 use Base64Url\Base64Url;
-use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Webauthn\PublicKeyCredentialSource;
@@ -54,7 +53,7 @@ class DrupalPublicKeyCredentialSourceRepository implements PublicKeyCredentialSo
     $query = $this->database
       ->select(static::DATABASE_TABLE, 'c');
     $query
-      ->condition('c.cid', Crypt::hashBase64($publicKeyCredentialId), '=')
+      ->condition('c.cid', Base64Url::encode($publicKeyCredentialId), '=')
       ->fields('c', ['cid', 'uuid', 'credential']);
     $result = $query
       ->execute();

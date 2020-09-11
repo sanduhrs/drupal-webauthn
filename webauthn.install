@@ -15,7 +15,7 @@ function webauthn_schema() {
       'cid' => [
         'description' => 'The credential id.',
         'type' => 'varchar',
-        'length' => 64,
+        'length' => 256,
         'not null' => TRUE,
         'default' => '',
       ],

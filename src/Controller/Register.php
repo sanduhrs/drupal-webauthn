@@ -6,12 +6,12 @@ use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelFactory;
-use Drupal\webauthn\DrupalPublicKeyCredentialSourceRepository;
 use Drupal\webauthn\DrupalPublicKeyCredentialUserEntityRepository;
 use GuzzleHttp\Psr7\ServerRequest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Webauthn\PublicKeyCredentialSourceRepository;
 use Webauthn\PublicKeyCredentialUserEntity;
 use Webauthn\Server;
 
@@ -46,7 +46,7 @@ class Register extends ControllerBase {
   /**
    * The public key credential source repository.
    *
-   * @var \Drupal\webauthn\DrupalPublicKeyCredentialSourceRepository
+   * @var \Webauthn\PublicKeyCredentialSourceRepository
    */
   protected $publicKeyCredentialSourceRepository;
 
@@ -79,9 +79,10 @@ class Register extends ControllerBase {
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
    * @param \Drupal\Core\Logger\LoggerChannelFactory $logger_channel_factory
+   *   The logger channel factory.
    * @param \Webauthn\Server $webauthn_server
    *   The Drupal Webauthn server
-   * @param \Drupal\webauthn\DrupalPublicKeyCredentialSourceRepository $public_key_credential_source_repository
+   * @param \Webauthn\PublicKeyCredentialSourceRepository $public_key_credential_source_repository
    *   The public key credential source repository.
    * @param \Drupal\webauthn\DrupalPublicKeyCredentialUserEntityRepository $public_key_credential_user_entity_repository
    *   The public key credential user entity repository.
@@ -92,7 +93,7 @@ class Register extends ControllerBase {
       RequestStack $request_stack,
       LoggerChannelFactory $logger_channel_factory,
       Server $webauthn_server,
-      DrupalPublicKeyCredentialSourceRepository $public_key_credential_source_repository,
+      PublicKeyCredentialSourceRepository $public_key_credential_source_repository,
       DrupalPublicKeyCredentialUserEntityRepository $public_key_credential_user_entity_repository
   ) {
     $this->configFactory = $config_factory;
@@ -140,9 +141,7 @@ class Register extends ControllerBase {
       'public_key_credentials_user_entity' => serialize($user_entity),
     ];
 
-    $data = $public_key_credential_creation_options
-      ->jsonSerialize();
-    return new JsonResponse($data);
+    return new JsonResponse($public_key_credential_creation_options, 200);
   }
 
   /**
@@ -176,9 +175,9 @@ class Register extends ControllerBase {
     }
     catch(\Throwable $exception) {
       $this->logger->error('Could not register: @error', ['@error' => $exception->getMessage()]);
-      return new JsonResponse([], 400);
+      return new JsonResponse(NULL, 400);
     }
-    return new JsonResponse([], 200);
+    return new JsonResponse(NULL, 200);
   }
 
 }

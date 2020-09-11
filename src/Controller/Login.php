@@ -6,7 +6,6 @@ use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelFactory;
-use Drupal\webauthn\DrupalPublicKeyCredentialSourceRepository;
 use Drupal\webauthn\DrupalPublicKeyCredentialUserEntityRepository;
 use GuzzleHttp\Psr7\ServerRequest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -14,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Webauthn\PublicKeyCredentialRequestOptions;
 use Webauthn\PublicKeyCredentialSource;
+use Webauthn\PublicKeyCredentialSourceRepository;
 use Webauthn\Server;
 
 /**
@@ -47,7 +47,7 @@ class Login extends ControllerBase {
   /**
    * The public key credential source repository.
    *
-   * @var \Drupal\webauthn\DrupalPublicKeyCredentialSourceRepository
+   * @var \Webauthn\PublicKeyCredentialSourceRepository
    */
   protected $publicKeyCredentialSourceRepository;
 
@@ -85,7 +85,7 @@ class Login extends ControllerBase {
    *   The logger channel factory.
    * @param \Webauthn\Server $webauthn_server
    *   The Drupal Webauthn server
-   * @param \Drupal\webauthn\DrupalPublicKeyCredentialSourceRepository $public_key_credential_source_repository
+   * @param \Webauthn\PublicKeyCredentialSourceRepository $public_key_credential_source_repository
    *   The public key credential source repository.
    * @param \Drupal\webauthn\DrupalPublicKeyCredentialUserEntityRepository $public_key_credential_user_entity_repository
    *   The public key credential user entity repository.
@@ -96,7 +96,7 @@ class Login extends ControllerBase {
       RequestStack $request_stack,
       LoggerChannelFactory $logger_channel_factory,
       Server $webauthn_server,
-      DrupalPublicKeyCredentialSourceRepository $public_key_credential_source_repository,
+      PublicKeyCredentialSourceRepository $public_key_credential_source_repository,
       DrupalPublicKeyCredentialUserEntityRepository $public_key_credential_user_entity_repository
   ) {
     $this->configFactory = $config_factory;
@@ -154,7 +154,8 @@ class Login extends ControllerBase {
       'public_key_credential_request_options' => serialize($public_key_credential_request_options),
       'public_key_credentials_user_entity' => serialize($user_entity),
     ];
-    return new JsonResponse();
+
+    return new JsonResponse($public_key_credential_request_options, 200);
   }
 
   /**
@@ -162,14 +163,18 @@ class Login extends ControllerBase {
    */
   public function action() {
     // Get user and credentials from the session variable.
+    /** @var \Webauthn\PublicKeyCredentialRequestOptions $public_key_credential_request_options */
     $public_key_credential_request_options = unserialize($_SESSION['webauthn']['public_key_credential_request_options']);
     $user_entity = unserialize($_SESSION['webauthn']['public_key_credentials_user_entity']);
     unset($_SESSION['webauthn']);
 
+    dpm($public_key_credential_request_options->jsonSerialize(), __METHOD__);
+    dpm($user_entity->jsonSerialize(), __METHOD__);
+
     try {
-      $publicKeyCredentialSource = $this->webauthnServer
+      $public_key_credential_source = $this->webauthnServer
         ->loadAndCheckAssertionResponse(
-          $this->request->getContent(),
+          \Drupal::request()->getContent(),
           $public_key_credential_request_options,
           $user_entity,
           ServerRequest::fromGlobals()
@@ -182,9 +187,9 @@ class Login extends ControllerBase {
     }
     catch(\Throwable $exception) {
       $this->logger->error('Could not login: @error', ['@error' => $exception->getMessage()]);
-      return new JsonResponse([], 400);
+      return new JsonResponse(NULL, 400);
     }
-    return new JsonResponse([], 200);
+    return new JsonResponse(NULL, 200);
   }
 
 }

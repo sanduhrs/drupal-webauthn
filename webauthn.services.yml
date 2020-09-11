@@ -5,6 +5,9 @@ services:
   webauthn.public_key_credential_source_repository:
     class: Drupal\webauthn\DrupalPublicKeyCredentialSourceRepository
     arguments: ['@config.factory', '@database']
+  webauthn.file_public_key_credential_source_repository:
+    class: Drupal\webauthn\FilePublicKeyCredentialSourceRepository
+    arguments: ['@config.factory']
   webauthn.public_key_credential_user_entity_repository:
     class: Drupal\webauthn\DrupalPublicKeyCredentialUserEntityRepository
     arguments: ['@config.factory']
