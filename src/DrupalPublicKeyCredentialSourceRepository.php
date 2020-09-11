@@ -26,6 +26,8 @@ class DrupalPublicKeyCredentialSourceRepository implements PublicKeyCredentialSo
   protected $configFactory;
 
   /**
+   * The database connection.
+   *
    * @var \Drupal\Core\Database\Connection
    */
   protected $database;
@@ -36,6 +38,7 @@ class DrupalPublicKeyCredentialSourceRepository implements PublicKeyCredentialSo
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
    * @param \Drupal\Core\Database\Connection $database
+   *   The database connection.
    */
   public function __construct(ConfigFactoryInterface $config_factory, Connection $database) {
     $this->configFactory = $config_factory;
@@ -46,8 +49,10 @@ class DrupalPublicKeyCredentialSourceRepository implements PublicKeyCredentialSo
    * Find by credential id.
    *
    * @param string $publicKeyCredentialId
+   *   The public key credential.
    *
    * @return \Webauthn\PublicKeyCredentialSource|null
+   *   The public key credential source.
    */
   public function findOneByCredentialId(string $publicKeyCredentialId): ?PublicKeyCredentialSource {
     $query = $this->database
@@ -67,8 +72,10 @@ class DrupalPublicKeyCredentialSourceRepository implements PublicKeyCredentialSo
    * Find all for user entity.
    *
    * @param \Webauthn\PublicKeyCredentialUserEntity $publicKeyCredentialUserEntity
+   *   The public key credential user entity.
    *
-   * @return PublicKeyCredentialSource[]
+   * @return \Webauthn\PublicKeyCredentialSource[]
+   *   An array of public key credential sources.
    */
   public function findAllForUserEntity(PublicKeyCredentialUserEntity $publicKeyCredentialUserEntity): array {
     $sources = [];
@@ -77,7 +84,7 @@ class DrupalPublicKeyCredentialSourceRepository implements PublicKeyCredentialSo
       ->fields('c', ['cid', 'uuid', 'credential'])
       ->condition('uuid', $publicKeyCredentialUserEntity->getId(), '=')
       ->execute();
-    foreach($rows as $record) {
+    foreach ($rows as $record) {
       $sources[] = PublicKeyCredentialSource::createFromArray(json_decode($record->credential, TRUE));
     }
     return $sources;
@@ -87,6 +94,7 @@ class DrupalPublicKeyCredentialSourceRepository implements PublicKeyCredentialSo
    * Save credential source.
    *
    * @param \Webauthn\PublicKeyCredentialSource $publicKeyCredentialSource
+   *   The public key credential source.
    *
    * @throws \Exception
    */

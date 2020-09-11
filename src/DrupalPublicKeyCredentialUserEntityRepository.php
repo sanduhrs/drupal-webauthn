@@ -45,8 +45,8 @@ class DrupalPublicKeyCredentialUserEntityRepository {
       $users = \Drupal::entityTypeManager()
         ->getStorage('user')
         ->loadByProperties([
-         'name' => $username,
-       ]);
+          'name' => $username,
+        ]);
     }
     catch (\Throwable $exception) {
       \Drupal::logger('webauthn')->error('Could not find user by name: @error', ['error' => $exception->getMessage()]);

@@ -65,6 +65,8 @@ class Register extends ControllerBase {
   protected $request;
 
   /**
+   * The logger channel.
+   *
    * @var \Drupal\Core\Logger\LoggerChannel|\Drupal\Core\Logger\LoggerChannelInterface
    */
   protected $logger;
@@ -74,14 +76,14 @@ class Register extends ControllerBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\Component\Uuid\UuidInterface
+   * @param \Drupal\Component\Uuid\UuidInterface $uuid
    *   The uuid service.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
    * @param \Drupal\Core\Logger\LoggerChannelFactory $logger_channel_factory
    *   The logger channel factory.
    * @param \Webauthn\Server $webauthn_server
-   *   The Drupal Webauthn server
+   *   The Drupal Webauthn server.
    * @param \Webauthn\PublicKeyCredentialSourceRepository $public_key_credential_source_repository
    *   The public key credential source repository.
    * @param \Drupal\webauthn\DrupalPublicKeyCredentialUserEntityRepository $public_key_credential_user_entity_repository
@@ -173,7 +175,7 @@ class Register extends ControllerBase {
       $this->publicKeyCredentialUserEntityRepository
         ->save($user_entity);
     }
-    catch(\Throwable $exception) {
+    catch (\Throwable $exception) {
       $this->logger->error('Could not register: @error', ['@error' => $exception->getMessage()]);
       return new JsonResponse(NULL, 400);
     }

@@ -77,14 +77,14 @@ class Login extends ControllerBase {
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
-   * @param \Drupal\Component\Uuid\UuidInterface
+   * @param \Drupal\Component\Uuid\UuidInterface $uuid
    *   The uuid service.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
    * @param \Drupal\Core\Logger\LoggerChannelFactory $logger_channel_factory
    *   The logger channel factory.
    * @param \Webauthn\Server $webauthn_server
-   *   The Drupal Webauthn server
+   *   The Drupal Webauthn server.
    * @param \Webauthn\PublicKeyCredentialSourceRepository $public_key_credential_source_repository
    *   The public key credential source repository.
    * @param \Drupal\webauthn\DrupalPublicKeyCredentialUserEntityRepository $public_key_credential_user_entity_repository
@@ -168,12 +168,11 @@ class Login extends ControllerBase {
     $user_entity = unserialize($_SESSION['webauthn']['public_key_credentials_user_entity']);
     unset($_SESSION['webauthn']);
 
-    dpm($user_entity);
     $this->webauthnServer
       ->setSecuredRelyingPartyId(['localhost']);
 
     try {
-      $public_key_credential_source = $this->webauthnServer
+      $this->webauthnServer
         ->loadAndCheckAssertionResponse(
           \Drupal::request()->getContent(),
           $public_key_credential_request_options,
@@ -183,10 +182,10 @@ class Login extends ControllerBase {
 
       // If everything is fine, this means the user has correctly been
       // authenticated.
-      //$this->publicKeyCredentialUserEntityRepository
-      //  ->login($user_entity);
+      $this->publicKeyCredentialUserEntityRepository
+        ->login($user_entity);
     }
-    catch(\Throwable $exception) {
+    catch (\Throwable $exception) {
       $this->logger->error('Could not login: @error', ['@error' => $exception->getMessage()]);
       return new JsonResponse(NULL, 400);
     }
