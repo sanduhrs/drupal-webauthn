@@ -33,8 +33,9 @@ function webauthn_schema() {
         'binary' => TRUE,
       ],
     ],
-    'primary key' => [
-      'cid',
+    'indexes' => [
+      'cid' => ['cid'],
+      'uuid' => ['uuid'],
     ],
   ];
   return $schema;

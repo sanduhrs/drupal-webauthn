@@ -168,8 +168,9 @@ class Login extends ControllerBase {
     $user_entity = unserialize($_SESSION['webauthn']['public_key_credentials_user_entity']);
     unset($_SESSION['webauthn']);
 
-    dpm($public_key_credential_request_options->jsonSerialize(), __METHOD__);
-    dpm($user_entity->jsonSerialize(), __METHOD__);
+    dpm($user_entity);
+    $this->webauthnServer
+      ->setSecuredRelyingPartyId(['localhost']);
 
     try {
       $public_key_credential_source = $this->webauthnServer
@@ -182,8 +183,8 @@ class Login extends ControllerBase {
 
       // If everything is fine, this means the user has correctly been
       // authenticated.
-      $this->publicKeyCredentialUserEntityRepository
-        ->login($user_entity);
+      //$this->publicKeyCredentialUserEntityRepository
+      //  ->login($user_entity);
     }
     catch(\Throwable $exception) {
       $this->logger->error('Could not login: @error', ['@error' => $exception->getMessage()]);

@@ -58,7 +58,7 @@ class DrupalPublicKeyCredentialSourceRepository implements PublicKeyCredentialSo
     $result = $query
       ->execute();
     if ($record = $result->fetch()) {
-      return PublicKeyCredentialSource::createFromArray(json_decode($record->credential));
+      return PublicKeyCredentialSource::createFromArray(json_decode($record->credential, TRUE));
     }
     return NULL;
   }
