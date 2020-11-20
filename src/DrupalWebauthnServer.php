@@ -32,7 +32,10 @@ class DrupalWebauthnServer extends Server {
     LoggerChannelFactory $logger_channel_factory
   ) {
     parent::__construct($relying_party, $repository, $metadata);
-    $this->setLogger($logger_channel_factory->get('webauthn'));
+
+    if (!\Drupal::config('webauthn.settings')->get('development')) {
+      $this->setLogger($logger_channel_factory->get('webauthn'));
+    }
   }
 
 }

@@ -23,11 +23,11 @@ use Webauthn\Server;
 class Register extends ControllerBase {
 
   /**
-   * The config factory.
+   * The configuration object.
    *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected $configFactory;
+  protected $config;
 
   /**
    * The uuid service.
@@ -98,13 +98,18 @@ class Register extends ControllerBase {
       PublicKeyCredentialSourceRepository $public_key_credential_source_repository,
       DrupalPublicKeyCredentialUserEntityRepository $public_key_credential_user_entity_repository
   ) {
-    $this->configFactory = $config_factory;
+    $this->config = $config_factory->get('webauthn.settings');
     $this->uuid = $uuid;
     $this->request = $request_stack->getCurrentRequest();
     $this->logger = $logger_channel_factory->get('webauthn');
     $this->webauthnServer = $webauthn_server;
     $this->publicKeyCredentialSourceRepository = $public_key_credential_source_repository;
     $this->publicKeyCredentialUserEntityRepository = $public_key_credential_user_entity_repository;
+
+    if ($this->config->get('development')) {
+      $this->webauthnServer
+        ->setSecuredRelyingPartyId(['localhost']);
+    }
   }
 
   /**
@@ -154,9 +159,6 @@ class Register extends ControllerBase {
     $public_key_credential_creation_options = unserialize($_SESSION['webauthn']['public_key_credential_creation_options']);
     $user_entity = unserialize($_SESSION['webauthn']['public_key_credentials_user_entity']);
     unset($_SESSION['webauthn']);
-
-    $this->webauthnServer
-      ->setSecuredRelyingPartyId(['localhost']);
 
     try {
       $public_key_credential_source = $this->webauthnServer

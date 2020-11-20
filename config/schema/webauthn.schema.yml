@@ -11,3 +11,6 @@ webauth.settings:
     relying_party_icon:
       type: string
       label: 'Icon'
+    development:
+      type: boolean
+      label: 'Development'

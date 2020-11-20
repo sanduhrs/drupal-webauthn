@@ -99,13 +99,18 @@ class Login extends ControllerBase {
       PublicKeyCredentialSourceRepository $public_key_credential_source_repository,
       DrupalPublicKeyCredentialUserEntityRepository $public_key_credential_user_entity_repository
   ) {
-    $this->configFactory = $config_factory;
+    $this->config = $config_factory->get('webauthn.settings');
     $this->uuid = $uuid;
     $this->request = $request_stack->getCurrentRequest();
     $this->logger = $logger_channel_factory->get('webauthn');
     $this->webauthnServer = $webauthn_server;
     $this->publicKeyCredentialSourceRepository = $public_key_credential_source_repository;
     $this->publicKeyCredentialUserEntityRepository = $public_key_credential_user_entity_repository;
+
+    if ($this->config->get('development')) {
+      $this->webauthnServer
+        ->setSecuredRelyingPartyId(['localhost']);
+    }
   }
 
   /**
@@ -167,9 +172,6 @@ class Login extends ControllerBase {
     $public_key_credential_request_options = unserialize($_SESSION['webauthn']['public_key_credential_request_options']);
     $user_entity = unserialize($_SESSION['webauthn']['public_key_credentials_user_entity']);
     unset($_SESSION['webauthn']);
-
-    $this->webauthnServer
-      ->setSecuredRelyingPartyId(['localhost']);
 
     try {
       $this->webauthnServer
