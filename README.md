@@ -1,12 +1,7 @@
-* Authenticator: Entity
-  https://webauthn-doc.spomky-labs.com/v/v3.3/webauthn-in-a-nutshell/authenticators
-* Public Key Credential Source Repository: Service
-  https://webauthn-doc.spomky-labs.com/v/v3.3/pre-requisites/credential-source-repository
-* User Entity Repository: Service
-  https://webauthn-doc.spomky-labs.com/v/v3.3/pre-requisites/user-entity-repository#user-entity-repository
-*
-*
-*
-
-- Decomissioning
--
+- Authenticators list
+- Authenticators decomission
+- Authenticators add multiple to existing user
+- Check if user already exists on registration
+- Do not allow one authenticator for multiple users
+- Login without username
+- More configuration options
