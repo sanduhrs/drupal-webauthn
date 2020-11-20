@@ -24,11 +24,11 @@ use Webauthn\Server;
 class Login extends ControllerBase {
 
   /**
-   * The config factory.
+   * The configuration object.
    *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   * @var \Drupal\Core\Config\ImmutableConfig
    */
-  protected $configFactory;
+  protected $config;
 
   /**
    * The uuid service.
@@ -147,7 +147,7 @@ class Login extends ControllerBase {
       return $credential->getPublicKeyCredentialDescriptor();
     }, $credential_sources);
 
-    // We generate the set of options.
+    // Generate the set of request options.
     $public_key_credential_request_options = $this->webauthnServer
       ->generatePublicKeyCredentialRequestOptions(
         PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_PREFERRED,
@@ -182,8 +182,8 @@ class Login extends ControllerBase {
           ServerRequest::fromGlobals()
         );
 
-      // If everything is fine, this means the user has correctly been
-      // authenticated.
+      // If everything is fine, this means the user has correctly
+      // been authenticated.
       $this->publicKeyCredentialUserEntityRepository
         ->login($user_entity);
     }
