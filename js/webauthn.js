@@ -4,12 +4,12 @@
 
       $('body').once('webauthn').each(function () {
         const login = webauthn.useLogin({
-          actionUrl: '/webauthn/login/do',
+          actionUrl: '/webauthn/login/action',
           optionsUrl: '/webauthn/login/options'
         });
 
         const register = webauthn.useRegistration({
-          actionUrl: '/webauthn/register/do',
+          actionUrl: '/webauthn/register/action',
           optionsUrl: '/webauthn/register/options'
         });
 

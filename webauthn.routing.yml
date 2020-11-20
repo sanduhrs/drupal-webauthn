@@ -5,8 +5,8 @@ webauthn.login:
     _form: 'Drupal\webauthn\Form\Login'
   requirements:
     _permission: 'access content'
-webauthn.login_do:
-  path: '/webauthn/login/do'
+webauthn.login_action:
+  path: '/webauthn/login/action'
   defaults:
     _controller: '\Drupal\webauthn\Controller\Login::action'
   requirements:
@@ -24,8 +24,8 @@ webauthn.register:
     _form: 'Drupal\webauthn\Form\Register'
   requirements:
     _permission: 'access content'
-webauthn.register_do:
-  path: '/webauthn/register/do'
+webauthn.register_action:
+  path: '/webauthn/register/action'
   defaults:
     _controller: '\Drupal\webauthn\Controller\Register::action'
   requirements:
